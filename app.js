@@ -91,25 +91,35 @@ document.addEventListener('DOMContentLoaded', function() {
     };
 
     // --- Form Handling (Fixed for Stability) ---
-    classForm.addEventListener('submit', function(e) {
-        e.preventDefault();
-        
-        // Using direct query selectors for stability
-        const newItem = {
-            subject: this.querySelector('input[placeholder="Subject"]').value,
-            grade: this.querySelector('input[placeholder="Grade/Class"]').value,
-            room: this.querySelector('input[placeholder="Room"]').value,
-            time: this.querySelector('input[type="time"]').value,
-            duration: parseInt(this.querySelector('input[type="number"]').value) || 45
-        };
+   classForm.addEventListener('submit', function (e) {
+    e.preventDefault();
 
-        scheduleData.push(newItem);
-        localStorage.setItem('teacherSchedule', JSON.stringify(scheduleData));
-        
-        classModal.style.display = 'none';
-        classForm.reset();
-        renderSchedule();
-    });
+    const subject = this.querySelector('input[placeholder="Subject"]');
+    const grade = this.querySelector('input[placeholder="Grade/Class"]');
+    const room = this.querySelector('input[placeholder="Room"]');
+    const time = this.querySelector('input[type="time"]');
+    const duration = this.querySelector('input[type="number"]');
+
+    if (!subject || !time) {
+        alert("Required fields are missing!");
+        return;
+    }
+
+    const newItem = {
+        subject: subject.value,
+        grade: grade ? grade.value : '',
+        room: room ? room.value : '',
+        time: time.value,
+        duration: duration ? parseInt(duration.value) : 45
+    };
+
+    scheduleData.push(newItem);
+    localStorage.setItem('teacherSchedule', JSON.stringify(scheduleData));
+
+    renderSchedule();
+    hideModal();
+});
+
 
     // UI Listeners
     document.getElementById('addClass').addEventListener('click', () => classModal.style.display = 'flex');
@@ -117,4 +127,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Init
     renderSchedule();
+    window.printSchedule = function () {
+    window.print();
+};
+
 });
