@@ -91,26 +91,26 @@ document.addEventListener('DOMContentLoaded', function() {
     };
 
     // --- Form Handling (Fixed for Stability) ---
-   classForm.addEventListener('submit', function (e) {
+  classForm.addEventListener('submit', function (e) {
     e.preventDefault();
 
-    const subject = this.querySelector('input[placeholder="Subject"]');
-    const grade = this.querySelector('input[placeholder="Grade/Class"]');
-    const room = this.querySelector('input[placeholder="Room"]');
-    const time = this.querySelector('input[type="time"]');
-    const duration = this.querySelector('input[type="number"]');
+    const subject = this.elements['subject'];
+    const grade = this.elements['grade'];
+    const room = this.elements['room'];
+    const time = this.elements['time'];
+    const duration = this.elements['duration'];
 
-    if (!subject || !time) {
-        alert("Required fields are missing!");
+    if (!subject.value || !time.value) {
+        alert("Please fill all required fields");
         return;
     }
 
     const newItem = {
         subject: subject.value,
-        grade: grade ? grade.value : '',
-        room: room ? room.value : '',
+        grade: grade.value,
+        room: room.value,
         time: time.value,
-        duration: duration ? parseInt(duration.value) : 45
+        duration: parseInt(duration.value) || 45
     };
 
     scheduleData.push(newItem);
